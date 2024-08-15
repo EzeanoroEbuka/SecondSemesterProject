@@ -8,7 +8,6 @@ import com.africa.semicolon.dtos.requests.SignUpRequest;
 import com.africa.semicolon.dtos.responses.*;
 import com.africa.semicolon.utility.MapUsers;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResetPasswordResponse reset(ResetPasswordRequest request) {
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest request) {
         ResetPasswordResponse response = new ResetPasswordResponse();
         User foundUser = findUserByEmail(request.getEmail());
         if (foundUser.getPassword().equals(request.getOldPassword())) {

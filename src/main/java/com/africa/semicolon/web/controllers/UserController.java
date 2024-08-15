@@ -8,6 +8,8 @@ import com.africa.semicolon.dtos.responses.ReviewAllUsersResponse;
 import com.africa.semicolon.dtos.responses.SignUpResponse;
 import com.africa.semicolon.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,9 +20,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public SignUpResponse signUpUser(@RequestBody SignUpRequest request) {
-
-        return userService.signUp(request);
+    public ResponseEntity<?> signUpUser(@RequestBody SignUpRequest request) {
+        try {
+            SignUpResponse signup = userService.signUp(request);
+             return new ResponseEntity<>(signup, HttpStatus.ACCEPTED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
     @PatchMapping("/logout/{email}")
     public LogoutResponse logOut(@PathVariable("email") String email) {

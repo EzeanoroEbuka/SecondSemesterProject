@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     SignUpResponse signUp(SignUpRequest request);
     LoginResponse login(LoginRequest request);
-    ResetPasswordResponse reset(ResetPasswordRequest request);
+    ResetPasswordResponse resetPassword(ResetPasswordRequest request);
     LogoutResponse logout(String email);
     ReviewAllUsersResponse reviewAll();
     FindUserResponse findUser(String email);

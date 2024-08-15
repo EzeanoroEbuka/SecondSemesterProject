@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-@Document
+@Document("taskTodo")
 public class Task {
 
     private String id;
