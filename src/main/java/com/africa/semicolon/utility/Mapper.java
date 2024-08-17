@@ -19,10 +19,13 @@ public class Mapper {
     }
     public static CreateTaskResponse responseMapping(Task task) {
         CreateTaskResponse response = new CreateTaskResponse();
+        response.setId(task.getId());
         response.setTitle(task.getTitle());
         response.setCompleted(task.isCompleted());
         response.setImportant(task.isImportant());
         response.setDueDate(task.getDueDate());
+        response.setDescription(task.getDescription());
+        response.setCreateDate(task.getCreatedDate());
         response.setMessage("Task created successfully");
         return response;
     }

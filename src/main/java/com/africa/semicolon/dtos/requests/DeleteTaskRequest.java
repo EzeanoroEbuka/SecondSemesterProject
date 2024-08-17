@@ -2,14 +2,9 @@ package com.africa.semicolon.dtos.requests;
 
 import lombok.Getter;
 import lombok.Setter;
-
-@Setter
 @Getter
-public class CreateTaskRequest {
+@Setter
+public class DeleteTaskRequest {
     private String title;
-    private String description;
-    private boolean isImportant;
-    private String dueDate;
     private String userEmail;
-
 }

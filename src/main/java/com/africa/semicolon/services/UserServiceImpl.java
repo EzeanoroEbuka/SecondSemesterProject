@@ -1,15 +1,13 @@
 package com.africa.semicolon.services;
 
+import com.africa.semicolon.datas.models.Task;
 import com.africa.semicolon.datas.models.User;
 import com.africa.semicolon.datas.repositories.UserRepository;
-import com.africa.semicolon.dtos.requests.LoginRequest;
-import com.africa.semicolon.dtos.requests.ResetPasswordRequest;
-import com.africa.semicolon.dtos.requests.SignUpRequest;
+import com.africa.semicolon.dtos.requests.*;
 import com.africa.semicolon.dtos.responses.*;
 import com.africa.semicolon.utility.MapUsers;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -17,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final TaskService taskService;
+    private final UserRepository userRepository;
 
     @Override
     public SignUpResponse signUp(SignUpRequest request) {
@@ -107,6 +106,52 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteAll();
         deleteAllUser.setMassage("All Users have been Deleted Successfully");
         return  deleteAllUser;
+    }
+
+    @Override
+    public CreateTaskResponse createTask(CreateTaskRequest request) {
+        findUser(request.getUserEmail());
+        User user = findUserByEmail(request.getUserEmail());
+        CreateTaskResponse response = taskService.createNewTask(request);
+        Task task = MapUsers.createTaskMapping(response);
+        user.getTasks().add(task);
+        userRepository.save(user);
+        return response;
+    }
+
+    @Override
+    public UpdateResponse updateTask(UpdateRequest request) {
+        return null;
+    }
+
+    @Override
+    public TaskReviewResponse reviewTask(GetTaskRequest request) {
+        return null;
+    }
+
+    @Override
+    public ReviewAllTaskResponse reviewAllTask() {
+        return null;
+    }
+
+    @Override
+    public DeleteAllTaskResponse clearAllTask() {
+        return null;
+    }
+
+    @Override
+    public DeleteTaskResponse deleteTask(DeleteTaskRequest request) {
+        DeleteTaskResponse response = new DeleteTaskResponse();
+        User foundUser = findUserByEmail(request.getUserEmail());
+        for (Task task : foundUser.getTasks()) {
+            if(task.getTitle().equalsIgnoreCase(request.getTitle())) {
+                response = taskService.deleteTask(request.getTitle());
+                foundUser.getTasks().remove(task);
+                userRepository.save(foundUser);
+                return response;
+            }
+        }
+        throw  new RuntimeException("Task not found...please try again");
     }
 
     private User findUserByEmail(String email) {

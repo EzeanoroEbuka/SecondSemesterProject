@@ -1,8 +1,6 @@
 package com.africa.semicolon.services;
 
-import com.africa.semicolon.dtos.requests.LoginRequest;
-import com.africa.semicolon.dtos.requests.ResetPasswordRequest;
-import com.africa.semicolon.dtos.requests.SignUpRequest;
+import com.africa.semicolon.dtos.requests.*;
 import com.africa.semicolon.dtos.responses.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -134,8 +132,67 @@ public class UserServiceTest {
         request2.setNewPassword("password2");
         request2.setOldPassword(request.getPassword());
         request2.setEmail(request.getEmail());
-        ResetPasswordResponse newResponse = userService.reset(request2);
+        ResetPasswordResponse newResponse = userService.resetPassword(request2);
         assertEquals(newResponse.getMessage(),"You Have Successfully changed your Login Password");
     }
 
+    @Test
+    public void testThatUserCanCreateNewTask(){
+        SignUpRequest request = new SignUpRequest();
+        request.setFirstName("Edith");
+        request.setLastName("Samuel");
+        request.setEmail("edi.samuel@gmail.com");
+        request.setPassword("pass2");
+        userService.signUp(request);
+        CreateTaskRequest taskRequest = new CreateTaskRequest();
+        taskRequest.setTitle("OOP");
+        taskRequest.setDescription("OOP means Object Oriented programming");
+        taskRequest.setDueDate("7/4/20223");
+        taskRequest.setImportant(true);
+        taskRequest.setUserEmail("edi.samuel@gmail.com");
+        userService.createTask(taskRequest);
+        assertEquals(1,userService.reviewAll().getUsers().size());
+        assertFalse(userService.findUser("edi.samuel@gmail.com").getTasks().isEmpty());
+    }
+
+    @Test
+    public void testThatUserCanDeleteTask(){
+        SignUpRequest request = new SignUpRequest();
+        request.setFirstName("Edith");
+        request.setLastName("Samuel");
+        request.setEmail("edi.samuel@gmail.com");
+        request.setPassword("pass2");
+        userService.signUp(request);
+        CreateTaskRequest taskRequest = new CreateTaskRequest();
+        taskRequest.setTitle("OOP");
+        taskRequest.setDescription("OOP means Object Oriented programming");
+        taskRequest.setDueDate("7/4/20223");
+        taskRequest.setImportant(true);
+        taskRequest.setUserEmail("edi.samuel@gmail.com");
+        userService.createTask(taskRequest);
+        assertFalse(userService.findUser("edi.samuel@gmail.com").getTasks().isEmpty());
+        DeleteTaskRequest deleteTaskRequest = new DeleteTaskRequest();
+        deleteTaskRequest.setTitle("OOP");
+        deleteTaskRequest.setUserEmail("edi.samuel@gmail.com");
+        userService.deleteTask(deleteTaskRequest);
+        assertTrue(userService.findUser("edi.samuel@gmail.com").getTasks().isEmpty());
+    }
+
+    @Test
+    public void  testThatUserCanUpdateTheirTask(){
+        SignUpRequest request = new SignUpRequest();
+        request.setFirstName("Edith");
+        request.setLastName("Samuel");
+        request.setEmail("edi.samuel@gmail.com");
+        request.setPassword("pass2");
+        userService.signUp(request);
+        CreateTaskRequest taskRequest = new CreateTaskRequest();
+        taskRequest.setTitle("OOP");
+        taskRequest.setDescription("OOP means Object Oriented programming");
+        taskRequest.setDueDate("7/4/20223");
+        taskRequest.setImportant(true);
+        taskRequest.setUserEmail("edi.samuel@gmail.com");
+        CreateTaskResponse newResponse = userService.createTask(taskRequest);
+
+    }
 }

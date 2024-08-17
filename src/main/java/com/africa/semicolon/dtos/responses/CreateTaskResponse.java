@@ -7,11 +7,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class CreateTaskResponse {
+
+    private String id;
     private String title;
+    private String description;
     private boolean isCompleted;
     private boolean isImportant;
     private String dueDate;
     private String message;
-    private LocalDate createDate = LocalDate.now();
+    private LocalDate createDate;
 
 }

@@ -1,8 +1,6 @@
 package com.africa.semicolon.services;
 
-import com.africa.semicolon.dtos.requests.LoginRequest;
-import com.africa.semicolon.dtos.requests.ResetPasswordRequest;
-import com.africa.semicolon.dtos.requests.SignUpRequest;
+import com.africa.semicolon.dtos.requests.*;
 import com.africa.semicolon.dtos.responses.*;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +14,11 @@ public interface UserService {
     FindUserResponse findUser(String email);
     DeleteUserResponse deleteUser(String email);
     DeleteAllUser deleteAllUsers();
+    CreateTaskResponse createTask (CreateTaskRequest request);
+    UpdateResponse updateTask(UpdateRequest request);
+    TaskReviewResponse reviewTask(GetTaskRequest request);
+    ReviewAllTaskResponse reviewAllTask();
+    DeleteAllTaskResponse clearAllTask();
+    DeleteTaskResponse deleteTask(DeleteTaskRequest request);
+
 }
